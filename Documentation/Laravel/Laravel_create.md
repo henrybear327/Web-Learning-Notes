@@ -61,6 +61,6 @@ sudo service apache2 reload
 
 Note that the file name must start with `beta.henrybear327.com`.
 
-# For local testing
+### Notes for local testing
 
 * `cd` into the project folder, and run `php -S localhost:8888 -t public` to start the local development server.
