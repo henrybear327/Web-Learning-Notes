@@ -1,8 +1,6 @@
 # Ubuntu Server setup
 
-## Secure server login
-
-### [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
+## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
 
 1. Setup a not-root user (with superuser privileges)
     * login using `ssh root@[server IP]`
