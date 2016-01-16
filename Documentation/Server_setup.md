@@ -1,5 +1,7 @@
 # Ubuntu Server setup
 
+This is all the work that I will do for a fresh ubuntu server setup. If you find anything wrong or strange, feel free to send me pull requests or submit issues. I will try my best to merge and discuss with you. 
+
 ## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
 
 1. Setup a not-root user (with superuser privileges)
@@ -38,8 +40,8 @@
     * Manually setup A to point to the IP address(@), and CNAME www(@)
     * Run throught all security service setup
 2. [Let's encrypt](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
-    * If using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
-    * Otherwise, clone [this repo](https://github.com/letsencrypt/letsencrypt) and do
+    * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
+    * Otherwise, do
     ```
     git clone https://github.com/letsencrypt/letsencrypt
 
@@ -93,9 +95,9 @@
   * add `ServerName localhost` to `apache2.conf` in `/etc/apache2`then restart apache by `sudo service apache2 restart`
 
 ### Notes on [Local testing](http://askubuntu.com/questions/92069/how-to-add-custom-directory-e-g-phpmyadmin)
-  * Simply grant current user the root permission to edit `/var/www/ folder`
+  * Simply grant current user the root permission to edit `/var/www/` folder
 
-## PHP
+## PHP5
 
 ### Installation
 
