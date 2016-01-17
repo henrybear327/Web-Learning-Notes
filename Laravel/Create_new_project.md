@@ -2,9 +2,9 @@
 
 ## Basics
 
-Run `laravel new` command will create a fresh Laravel installation in the directory you specify.
-
-For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed.
+* Run `laravel new` command will create a fresh Laravel installation in the directory you specify.
+    * For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed.
+* Run `php artisan serve` in the folder to start the local development server
 
 ## Change Folder Permission
 
