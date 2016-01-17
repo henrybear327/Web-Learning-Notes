@@ -1,6 +1,22 @@
 # Ubuntu Server setup
 
-This is all the work that I will do for a fresh ubuntu server setup. If you find anything wrong or strange, feel free to send me pull requests or submit issues. I will try my best to merge and discuss with you. 
+This is all the work that I will do for a fresh ubuntu server setup. If you find anything wrong or strange, feel free to send me pull requests or submit issues. I will try my best to merge and discuss with you.
+
+## Use connection protection service
+
+1. Cloudflare
+    * Manually setup A to point to the IP address(@), and CNAME www(@)
+    * Run throught all security service setup
+2. [Let's encrypt](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
+    * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
+    * Otherwise, do
+    ```
+    git clone https://github.com/letsencrypt/letsencrypt
+
+    cd letsencrypt
+
+    ./letsencrypt-auto
+    ```
 
 ## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
 
@@ -34,21 +50,23 @@ This is all the work that I will do for a fresh ubuntu server setup. If you find
     * change `#PasswordAuthentication yes` to `PasswordAuthentication no`
     * run `service ssh restart`
 
-## Connection protection service
+## Disable annoying locale warning
 
-1. Cloudflare
-    * Manually setup A to point to the IP address(@), and CNAME www(@)
-    * Run throught all security service setup
-2. [Let's encrypt](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
-    * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
-    * Otherwise, do
-    ```
-    git clone https://github.com/letsencrypt/letsencrypt
+* run `sudo locale-gen UTF-8`
+* run `sudo touch /var/lib/cloud/instance/locale-check.skip`
 
-    cd letsencrypt
+```
+WARNING! Your environment specifies an invalid locale. This can affect your user experience significantly, including the ability to manage packages. You may install the locales by running:
 
-    ./letsencrypt-auto
-    ```
+   sudo apt-get install language-pack-UTF-8
+     or
+   sudo locale-gen UTF-8
+
+To see all available language packs, run:
+   apt-cache search "^language-pack-[a-z][a-z]$"
+To disable this message for all users, run:
+   sudo touch /var/lib/cloud/instance/locale-check.skip
+```
 
 ## Apache
 
@@ -113,6 +131,53 @@ This is all the work that I will do for a fresh ubuntu server setup. If you find
 ### Error log location
 
 * `/var/log/apache2/error.log` or `/var/log/httpd/error_log`
+
+## MariaDB
+
+### [Installation](https://downloads.mariadb.org/mariadb/repositories/#mirror=opencas&distro=Ubuntu&distro_release=trusty--ubuntu_trusty&version=10.1)
+
+* `sudo apt-get install software-properties-common`
+* `sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db`
+* `sudo add-apt-repository 'deb [arch=amd64,i386] http://mirrors.opencas.cn/mariadb/repo/10.1/ubuntu trusty main'`
+* `sudo apt-get update`
+* `sudo apt-get install mariadb-server`
+* `sudo service mysql stop`
+* `sudo mysql_install_db`
+
+### [Secure MariaDB](https://mariadb.com/kb/en/mariadb/mysql_secure_installation/)
+
+* `sudo service mysql start`
+* run `mysql_secure_installation`
+* rename `root` user
+  * Method 1:
+    * login to mysql using `mysql -u [rootusername] -p`
+    * run `rename user 'root'@'localhost' to 'newAdminUser'@'localhost';`
+    * check by running `select user,host,password from mysql.user;`
+    * flush privileges for these changes to happen: `FLUSH PRIVILEGES;`
+  * Method 2 (preferred):
+    * login to mysql using `mysql -u [rootusername] -p`
+    * run `use mysql; update user set user='admin' where user='root'; flush privileges;`
+    * If you also want to change password, run `update user set password=PASSWORD('new password') where user='admin';` before `flush privileges;`
+
+## phpmyadmin
+
+### Installation
+
+* `sudo apt-get install phpmyadmin apache2-utils`
+
+### [Important config](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-12-04)
+  * [Change access url](http://www.thetechrepo.com/main-articles/488) from `phpmyadmin` to something else
+    * `vim /etc/phpmyadmin/apache.conf`
+    * `Alias /[whatever the name is] /usr/share/phpmyadmin`
+    * `sudo service apache2 restart`
+  * change to utf8_general
+
+### Possible problem
+
+* [Can't open phpmyadmin](http://stackoverflow.com/questions/10111455/i-cant-access-http-localhost-phpmyadmin)
+  * `vim /etc/apache2/apache2.conf`
+  * Add the phpmyadmin config to the file: `Include /etc/phpmyadmin/apache.conf`
+  * `sudo service apache2 restart`
 
 ## [Composer](https://getcomposer.org/doc/00-intro.md)
 
@@ -215,52 +280,3 @@ Some important rules to keep in mind:
 
 The A, CNAME, ALIAS records causes a name to resolve to an IP. Vice-versa, the URL record redirects the name to a destination. The URL record is simple and effective way to apply a redirect for a name to another name, for example to redirect www.example.com to example.com. The A name must resolve to an IP, the CNAME and ALIAS record must point to a name.
 ```
-
-# Old server setup notes
-
-## MariaDB
-
-### [Installation](https://downloads.mariadb.org/mariadb/repositories/#mirror=opencas&distro=Ubuntu&distro_release=trusty--ubuntu_trusty&version=10.1)
-
-* `sudo apt-get install software-properties-common`
-* `sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db`
-* `sudo add-apt-repository 'deb [arch=amd64,i386] http://mirrors.opencas.cn/mariadb/repo/10.1/ubuntu trusty main'`
-* `sudo apt-get update`
-* `sudo apt-get install mariadb-server`
-* `sudo service mysql stop`
-* `sudo mysql_install_db`
-
-### [Secure MariaDB](https://mariadb.com/kb/en/mariadb/mysql_secure_installation/)
-
-* `sudo service mysql start`
-* run `mysql_secure_installation`
-* rename `root` user
-  * Method 1:
-    * login to mysql using `mysql -u [rootusername] -p`
-    * run `rename user 'root'@'localhost' to 'newAdminUser'@'localhost';`
-    * check by running `select user,host,password from mysql.user;`
-    * flush privileges for these changes to happen: `FLUSH PRIVILEGES;`
-  * Method 2 (preferred):
-    * login to mysql using `mysql -u [rootusername] -p`
-    * run `use mysql; update user set user='admin' where user='root'; flush privileges;`
-    * If you also want to change password, run `update user set password=PASSWORD('new password') where user='admin';` before `flush privileges;`
-
-## phpmyadmin
-
-### Installation
-
-* `sudo apt-get install phpmyadmin apache2-utils`
-
-### [Important config](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-12-04)
-  * [Change access url](http://www.thetechrepo.com/main-articles/488) from `phpmyadmin` to something else
-    * `vim /etc/phpmyadmin/apache.conf`
-    * `Alias /[whatever the name is] /usr/share/phpmyadmin`
-    * `sudo service apache2 restart`
-  * change to utf8_general
-
-### Possible problem
-
-* [Can't open phpmyadmin](http://stackoverflow.com/questions/10111455/i-cant-access-http-localhost-phpmyadmin)
-  * `vim /etc/apache2/apache2.conf`
-  * Add the phpmyadmin config to the file: `Include /etc/phpmyadmin/apache.conf`
-  * `sudo service apache2 restart`
