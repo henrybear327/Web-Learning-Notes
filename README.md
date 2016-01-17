@@ -1,15 +1,6 @@
-# Ecourse for mom
+# Discription
 
-This is a E-learning system, exclusively designed for my lovely mom.
+These are my web learning notes. 
 
-# Notes about the system
+If you find anything wrong or strange, feel free to create a pull request to correct it, or create an issue to discuss with me. 
 
-This is a complete rewrite of the old system that I write in summer, 2015.
-
-The main components to be designed are:
-* Study progress report module
-* Course announcements module
-* Teaching material distribution module
-* Assignment turn in module
-    * Group assignment
-    * Single person assignment
