@@ -218,9 +218,9 @@ mv composer.phar /usr/local/bin/composer
 
 # [SWAP](https://www.digitalocean.com/community/tutorials/additional-recommended-steps-for-new-ubuntu-14-04-servers)
 
-## One-liner
+## One-liner for 2GB swap file
 
-`sudo fallocate -l 1G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile && sudo sh -c 'echo "/swapfile none swap sw 0 0" >> /etc/fstab'`
+`sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile && sudo sh -c 'echo "/swapfile none swap sw 0 0" >> /etc/fstab'`
 
 ## Create a Swap File Explained
 
@@ -269,6 +269,7 @@ Our system is using the swap file for this session, but we need to modify a syst
 # Final step
 
 * Run `sudo apt-get autoremove`
+* Run `sudo update-grub` if necessary
 
 # Notes
 
