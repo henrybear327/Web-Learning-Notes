@@ -22,8 +22,9 @@ This is all the work that I will do for a fresh ubuntu server setup. If you find
 
 1. Setup a not-root user (with superuser privileges)
     * login using `ssh root@[server IP]`
-    * add new user using `adduser [username]`, and use `su root` to switch to `root` and do superuser jobs
-    * Give [username] privileges to upload to `/var/www` by running
+    * add new user using `adduser [username]`
+        * use `su root` to switch to `root` and do superuser jobs
+    * *(After installing Apache)* Give [username] privileges to upload to `/var/www` by running
     ```
     sudo adduser <username> www-data
     sudo chown -R www-data:www-data /var/www
@@ -74,6 +75,12 @@ To disable this message for all users, run:
 
 * `sudo apt-get update && sudo apt-get install apache2`
     * Use `ip addr show eth0 | grep inet | awk '{ print $2; }' | sed 's/\/.*$//'` to check server IP address
+* Give [username] privileges to upload to `/var/www` by running
+```
+sudo adduser <username> www-data
+sudo chown -R www-data:www-data /var/www
+sudo chmod -R g+rwX /var/www
+```
 
 ###  Important configuration
   * apache configuration directory listing off
@@ -115,13 +122,21 @@ To disable this message for all users, run:
 ### Notes on [Local testing](http://askubuntu.com/questions/92069/how-to-add-custom-directory-e-g-phpmyadmin)
   * Simply grant current user the root permission to edit `/var/www/` folder
 
-## PHP5
+## PHP
 
-### Installation
+### PHP5 Installation
 
 * `sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt`
 * `sudo php5enmod mcrypt`
 * Go to `sudo vim /etc/apache2/mods-enabled/dir.conf`, and move `index.php` to the front of `index.html`. Then, `sudo service apache2 restart`
+
+### [PHP7 Installation](https://www.digitalocean.com/community/tutorials/how-to-upgrade-to-php-7-on-ubuntu-14-04)
+
+* `sudo apt-get install -y language-pack-en-base`
+* `sudo LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php`
+* `sudo apt-get update`
+* `sudo apt-get install php7.0`
+* `sudo apt-get install php7.0-mysql`
 
 ### Possible problem
 
@@ -133,6 +148,11 @@ To disable this message for all users, run:
 * `/var/log/apache2/error.log` or `/var/log/httpd/error_log`
 
 ## MariaDB
+
+### Oneliner (Don't forget to change root username aterwards!)
+```
+sudo apt-get install software-properties-common && sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db && sudo add-apt-repository 'deb [arch=amd64,i386] http://mirrors.opencas.cn/mariadb/repo/10.1/ubuntu trusty main' && sudo apt-get update && sudo apt-get install mariadb-server && sudo service mysql stop && sudo mysql_install_db && sudo service mysql start && mysql_secure_installation
+```
 
 ### [Installation](https://downloads.mariadb.org/mariadb/repositories/#mirror=opencas&distro=Ubuntu&distro_release=trusty--ubuntu_trusty&version=10.1)
 
@@ -147,7 +167,7 @@ To disable this message for all users, run:
 ### [Secure MariaDB](https://mariadb.com/kb/en/mariadb/mysql_secure_installation/)
 
 * `sudo service mysql start`
-* run `mysql_secure_installation`
+* `mysql_secure_installation`
 * rename `root` user
   * Method 1:
     * login to mysql using `mysql -u [rootusername] -p`
@@ -178,6 +198,10 @@ To disable this message for all users, run:
   * `vim /etc/apache2/apache2.conf`
   * Add the phpmyadmin config to the file: `Include /etc/phpmyadmin/apache.conf`
   * `sudo service apache2 restart`
+
+### Notes
+
+* `/etc/mysql/debian.cnf`
 
 ## [Composer](https://getcomposer.org/doc/00-intro.md)
 
@@ -223,13 +247,6 @@ Our system is using the swap file for this session, but we need to modify a syst
 * If your VPS is configured for IPv6, ensure that UFW is configured to support IPv6 so that will configure both your IPv4 and IPv6 firewall rules. To do this, open the UFW configuration with this command: `sudo vi /etc/default/ufw`. Then make sure "IPV6" is set to "yes", like so:`IPV6=yes` Save and quit. Then restart your firewall with the following commands: `sudo ufw disable`
 `sudo ufw enable`
 
-# ntp
-
-* `sudo dpkg-reconfigure tzdata`
-*  select time zone
-* `sudo apt-get update`
-* `sudo apt-get install ntp`
-
 ## Setup
 
 * `sudo ufw default deny incoming`
@@ -241,6 +258,17 @@ Our system is using the swap file for this session, but we need to modify a syst
 * `sudo ufw allow 8834/tcp` (nessus)
 * if needed
   * `sudo ufw allow 443/tcp` (SSL/TLS)
+
+# ntp
+
+* `sudo dpkg-reconfigure tzdata`
+*  select time zone
+* `sudo apt-get update`
+* `sudo apt-get install ntp`
+
+# Final step
+
+* Run `sudo apt-get autoremove`
 
 # Notes
 
