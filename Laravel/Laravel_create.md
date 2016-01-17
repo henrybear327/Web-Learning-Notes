@@ -19,7 +19,7 @@ For instance, `laravel new blog` will create a directory named `blog` containing
 
 ### Change Folder Permission
 
-* Run `sudo chmod -R 775 storage/ bootstrap/cache/`
+* Run `sudo chmod -R 775 storage/ bootstrap/cache/ vendor/`
     * If fails, make sure these are run beforehand
     ```
     sudo adduser <username> www-data
