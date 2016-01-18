@@ -285,6 +285,8 @@ Our system is using the swap file for this session, but we need to modify a syst
 
 * Run `sudo apt-get autoremove`
 * Run `sudo update-grub` if necessary
+* Install Nessus
+* Take a snapshot of the current system state
 
 # Notes
 
