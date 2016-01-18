@@ -9,7 +9,7 @@
 ## Change Folder Permission
 
 * Run `sudo chmod -R 775 storage/ bootstrap/cache/ vendor/`
-    * If fails, make sure these are run beforehand
+    * If web viewing fails, make sure these are run beforehand
     ```
     sudo adduser <username> www-data
     sudo chown -R www-data:www-data /var/www
@@ -24,15 +24,15 @@ Add a Virtual Host in Apache configuration file to access Laravel framework from
 
 Don't forget to update DNS settings, too! Add `cname` in the DNS page.
 
-Create Apache configuration file under `/etc/apache2/sites-available/` directory and add below content.
+Create Apache configuration file under `/etc/apache2/sites-available/` directory , name the file as `beta.henrybear327.com.conf`, and add the content below:
 ```
 <VirtualHost *:80>
         ServerName beta.henrybear327.com
-        DocumentRoot /var/www/html/Ecourse/public
+        DocumentRoot /var/www/html/beta/public
 
-        <Directory /var/www/html/Ecourse/public>
+        <Directory /var/www/html/beta/public>
                 AllowOverride All
-                Options Indexes FollowSymLinks
+                Options -Indexes +FollowSymLinks
                 Require all granted
         </Directory>
 
@@ -48,8 +48,7 @@ a2ensite beta.henrybear327.com
 sudo service apache2 reload
 ```
 
-Note that the file name must start with `beta.henrybear327.com`.
-
 ## Notes for local testing
 
 * `cd` into the project folder, and run `php -S localhost:8888 -t public` to start the local development server.
+* `php artisan serve`

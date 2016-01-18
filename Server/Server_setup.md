@@ -135,8 +135,13 @@ sudo chmod -R g+rwX /var/www
 * `sudo apt-get install -y language-pack-en-base`
 * `sudo LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php`
 * `sudo apt-get update`
-* `sudo apt-get install php7.0`
-* `sudo apt-get install php7.0-mysql`
+* `sudo apt-get install php7.0 php7.0-mysql`
+
+#### Oneliner
+
+```
+sudo apt-get install -y language-pack-en-base && sudo LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php && sudo apt-get update && sudo apt-get install php7.0 php7.0-mysql
+```
 
 ### Possible problem
 
@@ -181,7 +186,7 @@ sudo apt-get install software-properties-common && sudo apt-key adv --recv-keys 
 
 ## phpmyadmin
 
-### Installation
+### Installation for php5
 
 * `sudo apt-get install phpmyadmin apache2-utils`
 
@@ -191,6 +196,12 @@ sudo apt-get install software-properties-common && sudo apt-key adv --recv-keys 
     * `Alias /[whatever the name is] /usr/share/phpmyadmin`
     * `sudo service apache2 restart`
   * change to utf8_general
+
+### Installation for php7
+
+* `wget https://files.phpmyadmin.net/phpMyAdmin/4.5.3.1/phpMyAdmin-4.5.3.1-all-languages.tar.gz`
+
+* `tar -xvzf phpMyAdmin-4.5.3.1-all-languages.tar.gz`
 
 ### Possible problem
 
@@ -265,6 +276,10 @@ Our system is using the swap file for this session, but we need to modify a syst
 *  select time zone
 * `sudo apt-get update`
 * `sudo apt-get install ntp`
+
+# htop
+
+* `sudo apt-get install htop`
 
 # Final step
 
