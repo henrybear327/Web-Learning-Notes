@@ -16,7 +16,11 @@
     sudo chmod -R g+rwX /var/www
     ```
 
-> After installing Laravel, you may need to configure some permissions. Directories within the storage and the bootstrap/cache directories should be writable by your web server or Laravel will not run. If you are using the Homestead virtual machine, these permissions should already be set.
+> After installing Laravel, you may need to configure some permissions. Directories within the storage and the bootstrap/cache directories should be writable by your web server or Laravelwill not run. If you are using the Homestead virtual machine, these permissions should already be set.
+
+## Change timezone
+
+* Edit `config/app.php`, change timezone from `UTC` to `Asia/Taipei`
 
 ## Create Apache VirtualHost
 
