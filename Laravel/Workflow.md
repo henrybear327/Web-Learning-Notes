@@ -14,7 +14,7 @@ Using [Git to sync files](http://stackoverflow.com/questions/20383871/laravel-de
     * run `composer install` on server at the first time!
 * Create `development` branch for development. Master branch is only for merging and that's what the users see (production server).
     * Use `crontab` to do automation
-        * run `crontab -e` and add `*/3 * * * * cd /var/www/html/Beta-Laravel/ && git pull origin master && composer update && php artisan migrate`
+        * run `crontab -e` and add `*/3 * * * * cd /var/www/html/Beta-Laravel/ && git pull origin master && composer install && php artisan migrate`
     * Run `grep CRON /var/log/syslog` to see crontab output
 * Update .env files on both local and production server, that's the only file not version controlled by git!
     * run `php artisan key:generate`
