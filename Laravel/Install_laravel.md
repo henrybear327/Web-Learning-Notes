@@ -8,4 +8,4 @@
 ### Enable `mod rewrite`
 
 * Run `a2enmod rewrite`
-* service apache2 restart
+* `service apache2 restart`
