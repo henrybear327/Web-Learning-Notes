@@ -8,7 +8,7 @@
 ## Git
 
 * Setup a git repo on Github and `git init` the local Laravel project. Push the code the Github and pull it down on server.
-    * run `composer install` on server at the first time!
+    * run `composer install` on server after the first `git pull`!
 * Update `readme.md`
 * Update `.gitignore`
     * add `.DS_Store` and `.idea`
