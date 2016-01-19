@@ -152,6 +152,11 @@ sudo apt-get install -y language-pack-en-base && sudo LC_ALL=en_US.UTF-8 add-apt
 
 * `/var/log/apache2/error.log` or `/var/log/httpd/error_log`
 
+### [`php.ini`](http://www.cyberciti.biz/tips/php-security-best-practices-tutorial.html)
+
+* Go to `/etc/php5/apache2` and open `php.ini`
+    * `expose_php=Off`
+
 ## MariaDB
 
 ### Oneliner (Don't forget to change root username aterwards!)
