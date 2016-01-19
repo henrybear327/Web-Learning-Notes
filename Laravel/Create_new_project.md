@@ -4,7 +4,25 @@
 
 * Run `laravel new` command will create a fresh Laravel installation in the directory you specify.
     * For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed.
-* Run `php artisan serve` in the folder to start the local development server
+
+## Git
+
+* Setup a git repo on Github and `git init` the local Laravel project. Push the code the Github and pull it down on server.
+    * run `composer install` on server at the first time!
+* Update `readme.md`
+* Update `.gitignore`
+    * add `.DS_Store` and `.idea`
+* Create `development` branch for development. Master branch is only for merging and that's what the users see (production server).
+    * Use `crontab` to do automatic update on development site
+        * run `crontab -e` and add
+            * `* * * * * cd /var/www/html/Beta-Laravel && git pull origin master`
+            * `* * * * * cd /var/www/html/Beta-Laravel && composer install`
+            * `* * * * * cd /var/www/html/Beta-Laravel && php artisan migrate`
+    * Run `grep CRON /var/log/syslog` to see crontab output
+    * Enable crontab logging
+        * run `vim /etc/rsyslog.d/50-default.conf`, remove `#` which is in front of `#cron.*`
+        * run `service rsyslog restart && service cron restart`
+        * Go to `/var/log/cron.log` to see log
 
 ## Change Folder Permission
 
@@ -17,10 +35,6 @@
     ```
 
 > After installing Laravel, you may need to configure some permissions. Directories within the storage and the bootstrap/cache directories should be writable by your web server or Laravelwill not run. If you are using the Homestead virtual machine, these permissions should already be set.
-
-## Change timezone
-
-* Edit `config/app.php`, change timezone from `UTC` to `Asia/Taipei`
 
 ## Create Apache VirtualHost
 
@@ -51,8 +65,30 @@ After that, run
 a2ensite beta.henrybear327.com
 sudo service apache2 reload
 ```
+## `.env` file
 
-## Notes for local testing
+* Update .env files on both local and production server, that's the only file not version controlled by git!
+    * run `php artisan key:generate`
+    * Database connection
+        * use 127.0.0.1 on Mac
+
+## Change timezone
+
+* Edit `config/app.php`, change timezone from `UTC` to `Asia/Taipei`
+
+# Notes
+
+## Local testing
 
 * `cd` into the project folder, and run `php -S localhost:8888 -t public` to start the local development server.
 * `php artisan serve`
+
+## Syncing projects
+
+Using [Git to sync files](http://stackoverflow.com/questions/20383871/laravel-deployment-there-is-a-standard-way) between local machine and production server. Don't use sftp.
+
+    1. `git pull` the repository
+    2. Execute `composer update` to update your vendor folder
+    3. Execute `bower update` to download whatever js or css you've installed
+    4. Execute `php artisan migrate` to upgrade your database schema
+    5. Execute `chmod` and `chown` to fix whatever permission mess those commands might have made to your directories while downloading files
