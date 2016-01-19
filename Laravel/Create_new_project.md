@@ -86,7 +86,7 @@ Genius! Very convenient to use!
 
 ### [Installation](https://github.com/barryvdh/laravel-ide-helper)
 
-* `composer require barryvdh/laravel-ide-helper`
+* `composer update && composer require barryvdh/laravel-ide-helper`
 * After updating composer, add the service provider to the `providers` array in `config/app.php`: `Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,`
 
 ### [Usage](https://laracasts.com/series/how-to-be-awesome-in-phpstorm/episodes/15)
