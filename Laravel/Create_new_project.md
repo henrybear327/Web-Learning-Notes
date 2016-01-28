@@ -7,11 +7,17 @@
 
 ## Git
 
-* Setup a git repo on Github and `git init` the local Laravel project. Push the code the Github and pull it down on server.
+* Setup a git repo on Github and `git init` the local Laravel project.
+* Push the code the Github, and pull it down on server.
     * run `composer install` on server after the first `git pull`!
 * Update `readme.md`
-* Update `.gitignore`
-    * add `.DS_Store` and `.idea`
+* If [global `.gitignore`](http://stackoverflow.com/questions/7529266/git-global-ignore-not-working) hasn't been set
+    * Run `git config --global core.excludesfile ~/.gitignore_global`
+    * Create `~/.gitignore_global` with
+    ```
+    .DS_Store
+    .idea
+    ```
 * Create `development` branch for development. Master branch is only for merging and that's what the users see (production server).
     * Use `crontab` to do automatic update on development site
         * run `crontab -e` and add
@@ -27,22 +33,34 @@
 ## Change Folder Permission
 
 * Run `sudo chmod -R 775 storage/ bootstrap/cache/ vendor/`
-    * If web viewing fails, make sure these are run beforehand
-    ```
-    sudo adduser <username> www-data
-    sudo chown -R www-data:www-data /var/www
-    sudo chmod -R g+rwX /var/www
-    ```
+* Run
+```
+sudo adduser <username> www-data
+sudo chown -R www-data:www-data /var/www
+sudo chmod -R g+rwX /var/www
+```
 
 > After installing Laravel, you may need to configure some permissions. Directories within the storage and the bootstrap/cache directories should be writable by your web server or Laravelwill not run. If you are using the Homestead virtual machine, these permissions should already be set.
+
+## `.env` file
+
+* Update .env files on both local and production server, that's the only file not version controlled by git!
+    * run `php artisan key:generate`
+    * Database connection
+        * use 127.0.0.1 on Mac
+* Run `php artisan migrate`
+
+## Test the connection so far!!
+
+* Try to connect `[domain name]/[project name]/public` and see if you can see `Laravel 5`!
+* Change `Laravel 5` to something else and see if `crontab` is working correctly.
 
 ## Create Apache VirtualHost
 
 Add a Virtual Host in Apache configuration file to access Laravel framework from web browser.
 
-Don't forget to update DNS settings, too! Add `cname` in the DNS page.
-
-Create Apache configuration file under `/etc/apache2/sites-available/` directory , name the file as `beta.henrybear327.com.conf`, and add the content below:
+* Add `cname` in the DNS page.
+* Create Apache configuration file under `/etc/apache2/sites-available/` directory , name the file as `beta.henrybear327.com.conf`, and add the content below:
 ```
 <VirtualHost *:80>
         ServerName beta.henrybear327.com
@@ -62,15 +80,8 @@ Create Apache configuration file under `/etc/apache2/sites-available/` directory
 
 After that, run
 ```
-a2ensite beta.henrybear327.com
-sudo service apache2 reload
+a2ensite beta.henrybear327.com && sudo service apache2 reload
 ```
-## `.env` file
-
-* Update .env files on both local and production server, that's the only file not version controlled by git!
-    * run `php artisan key:generate`
-    * Database connection
-        * use 127.0.0.1 on Mac
 
 ## Change timezone
 
@@ -86,18 +97,9 @@ Genius! Very convenient to use!
 
 ### [Installation](https://github.com/barryvdh/laravel-ide-helper)
 
-* `composer update && composer require barryvdh/laravel-ide-helper`
-* After updating composer, add the service provider to the `providers` array in `config/app.php`: `Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,`
-
-### [Usage](https://laracasts.com/series/how-to-be-awesome-in-phpstorm/episodes/15)
-
-Run the oneliner.
-
-```
-php artisan clear-compiled && php artisan ide-helper:generate && php artisan optimize
-```
-
-Or add
+* run `composer update && composer require barryvdh/laravel-ide-helper`
+* __After__ updating composer, add the service provider to the `providers` array in `config/app.php`: `Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,`
+* Add
 ```
 "scripts":{
     "post-update-cmd": [
@@ -109,6 +111,12 @@ Or add
 ```
 in `composer.json` to trigger these commands after each commit.
 
+### [Usage](https://laracasts.com/series/how-to-be-awesome-in-phpstorm/episodes/15)
+
+* Run the oneliner.
+```
+php artisan clear-compiled && php artisan ide-helper:generate && php artisan optimize
+```
 
 # Notes
 
