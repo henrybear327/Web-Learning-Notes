@@ -108,6 +108,7 @@ sudo chmod -R g+rwX /var/www
         # vim /etc/apache/apache2.conf (Debian/Ubuntu)
         ```
       * Add
+      
         ```
         ServerSignature Off
         ServerTokens ProductOnly
