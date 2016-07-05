@@ -17,6 +17,10 @@ This is all the work that I will do for a fresh ubuntu server setup. If you find
 
     ./letsencrypt-auto
     ```
+    
+## After the droplet has been created
+
+1. Run `apt-get update`
 
 ## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
 
