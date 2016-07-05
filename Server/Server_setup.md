@@ -54,7 +54,6 @@ To disable this message for all users, run:
     * login using `ssh root@[server IP]`
     * add new user using `adduser [username]`
         * use `su root` to switch to `root` and do superuser jobs
-    ```
     * *(optional)* give [username] sudo privileges using `gpasswd -a [username] sudo`
         * remove user from user group `sudo gpasswd -d [username] [group]`
         * look up user group `groups [username]`
