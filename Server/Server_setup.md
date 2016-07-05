@@ -169,9 +169,9 @@ flush privileges;
 exit;
 ```
 
-## PHP
+## PHP7
 
-### PHP7 Installation
+### PHP Installation
 
 * `sudo apt-get install php libapache2-mod-php php-mcrypt php-mysql`
 * `sudo vim /etc/apache2/mods-enabled/dir.conf`
@@ -243,7 +243,7 @@ exit;
   * Add the phpmyadmin config to the file: `Include /etc/phpmyadmin/apache.conf`
   * `sudo service apache2 restart`
 
-### Notes
+### Some Notes
 
 * `/etc/mysql/debian.cnf`
 
