@@ -2,49 +2,6 @@
 
 This is all the work that I will do for a fresh ubuntu server setup. If you find anything wrong or strange, feel free to send me pull requests or submit issues. I will try my best to merge and discuss with you.
 
-## Use connection protection service
-
-1. Cloudflare
-    * Manually setup A to point to the IP address(@), and CNAME www(@)
-    * Run throught all security service setup
-2. [Let's encrypt](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
-    * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
-    * Otherwise, do
-    ```
-    git clone https://github.com/letsencrypt/letsencrypt
-
-    cd letsencrypt
-
-    ./letsencrypt-auto
-    ```
-
-## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
-
-1. Setup a not-root user (with superuser privileges)
-    * login using `ssh root@[server IP]`
-    * add new user using `adduser [username]`
-        * use `su root` to switch to `root` and do superuser jobs
-    ```
-    * *(optional)* give [username] sudo privileges using `gpasswd -a [username] sudo`
-        * remove user from user group `sudo gpasswd -d [username] [group]`
-        * look up user group `groups [username]`
-2. Disable remote root login
-    * go to `vim /etc/ssh/sshd_config`, and search for `/PermitRootLogin`. Change `PermitRootLogin` to `no` and save it.
-    * run `service ssh restart`
-    * Logout of `root`
-3. Public key authentication
-    * Login to `[username]`
-    * Generate SSH key on **local machine** using `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`
-    * `cat .ssh/id_rsa.pub` or `more .ssh/id_rsa.pub`
-    * Run `mkdir .ssh` on [username], and restrict its permission by running `chmod 700 .ssh`.
-    * Add local machine's public key to [username]'s `vim .ssh/authorized_keys`
-4. Disable password authentication
-    * Switch to `root` user
-    * run `vim /etc/ssh/sshd_config`
-    * search for `PasswordAuth`
-    * change `#PasswordAuthentication yes` to `PasswordAuthentication no`
-    * run `service ssh restart`
-
 ## Disable annoying locale warning
 
 ### Solution 1 (This is what I use)
@@ -74,6 +31,50 @@ To see all available language packs, run:
 To disable this message for all users, run:
    sudo touch /var/lib/cloud/instance/locale-check.skip
 ```
+
+## Use connection protection service
+
+1. Cloudflare
+    * Manually setup A to point to the IP address(@), and CNAME www(@)
+    * Run throught all security service setup
+2. [Let's encrypt](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
+    * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
+    * Otherwise, do
+    ```
+    git clone https://github.com/letsencrypt/letsencrypt
+
+    cd letsencrypt
+
+    ./letsencrypt-auto
+    ```
+
+## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
+
+1. Setup a not-root user (with superuser privileges)
+    * login using `ssh root@[server IP]`
+    * add new user using `adduser [username]`
+        * use `su root` to switch to `root` and do superuser jobs
+    ```
+    * *(optional)* give [username] sudo privileges using `gpasswd -a [username] sudo`
+        * remove user from user group `sudo gpasswd -d [username] [group]`
+        * look up user group `groups [username]`
+
+2. Disable remote root login
+    * go to `vim /etc/ssh/sshd_config`, and search for `/PermitRootLogin`. Change `PermitRootLogin` to `no` and save it.
+    * run `service ssh restart`
+    * Logout of `root`
+3. Public key authentication
+    * Login to `[username]`
+    * Generate SSH key on **local machine** using `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`
+    * `cat .ssh/id_rsa.pub` or `more .ssh/id_rsa.pub`
+    * Run `mkdir .ssh` on [username], and restrict its permission by running `chmod 700 .ssh`.
+    * Add local machine's public key to [username]'s `vim .ssh/authorized_keys`
+4. Disable password authentication
+    * Switch to `root` user
+    * run `vim /etc/ssh/sshd_config`
+    * search for `PasswordAuth`
+    * change `#PasswordAuthentication yes` to `PasswordAuthentication no`
+    * run `service ssh restart`
 
 ## Apache
 
