@@ -4,14 +4,18 @@ This is all the work that I will do for a fresh ubuntu server setup. If you find
 
 ## Disable annoying locale warning
 
-### Solution 1 (This is what I use)
+### [Solution 1](http://askubuntu.com/questions/599808/cannot-set-lc-ctype-to-default-locale-no-such-file-or-directory)
 
-* `vim /etc/environment`
+* `sudo locale-gen "en_US.UTF-8"`
+* `sudo dpkg-reconfigure locales`
+* `/etc/default/locale`
 * add
 ```
-LC_ALL=en_US.UTF-8
-LANG=en_US.UTF-8
+LC_CTYPE="en_US.UTF-8"
+LC_ALL="en_US.UTF-8"
+LANG="en_US.UTF-8"
 ```
+* Logout and login again
 
 ### Solution 2
 
@@ -50,6 +54,8 @@ To disable this message for all users, run:
 
 ## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
 
+* Run `apt-get update; apt-get upgrade`
+
 1. Setup a not-root user (with superuser privileges)
     * login using `ssh root@[server IP]`
     * add new user using `adduser [username]`
@@ -57,10 +63,10 @@ To disable this message for all users, run:
     * *(optional)* give [username] sudo privileges using `gpasswd -a [username] sudo`
         * remove user from user group `sudo gpasswd -d [username] [group]`
         * look up user group `groups [username]`
-
 2. Disable remote root login
-    * go to `vim /etc/ssh/sshd_config`, and search for `/PermitRootLogin`. Change `PermitRootLogin` to `no` and save it.
+    * go to `vim /etc/ssh/sshd_config`, and search for `PermitRootLogin`. Change `PermitRootLogin` to `no` and save it.
     * run `service ssh restart`
+    * Setup root password by running `passwd`
     * Logout of `root`
 3. Public key authentication
     * Login to `[username]`
