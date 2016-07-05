@@ -159,26 +159,32 @@ sudo chmod -R g+rwX /var/www
   * run `use mysql; update user set user='admin' where user='root'; flush privileges;`
   * If you also want to change password, run `update user set password=PASSWORD('new password') where user='admin';` before `flush privileges;`
 
+### [Final fix for phpMyAdmin to work](http://superuser.com/questions/957708/mysql-mariadb-error-1698-28000-access-denied-for-user-rootlocalhost)
+
+```
+sudo mysql -u root
+use mysql;
+update user set plugin='' where User='root';
+flush privileges;
+exit;
+```
+
 ## PHP
 
-### PHP5 Installation
+### PHP7 Installation
 
-* `sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt`
-* `sudo php5enmod mcrypt`
-* Go to `sudo vim /etc/apache2/mods-enabled/dir.conf`, and move `index.php` to the front of `index.html`. Then, `sudo service apache2 restart`
-
-### [PHP7 Installation](https://www.digitalocean.com/community/tutorials/how-to-upgrade-to-php-7-on-ubuntu-14-04)
-
-* `sudo apt-get install -y language-pack-en-base`
-* `sudo LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php`
-* `sudo apt-get update`
-* `sudo apt-get install php7.0 php7.0-mysql`
-
-#### Oneliner
-
-```
-sudo apt-get install -y language-pack-en-base && sudo LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php && sudo apt-get update && sudo apt-get install php7.0 php7.0-mysql
-```
+* `sudo apt-get install php libapache2-mod-php php-mcrypt php-mysql`
+* `sudo vim /etc/apache2/mods-enabled/dir.conf`
+* `sudo systemctl restart apache2`
+    * Check status using `sudo systemctl status apache2`
+* Create test page
+    * `sudo vim /var/www/html/info.php`
+    * Add
+    ```
+    <?php
+    phpinfo();
+    ```
+    * `sudo rm /var/www/html/info.php`
 
 ### Possible problem
 
@@ -196,15 +202,38 @@ sudo apt-get install -y language-pack-en-base && sudo LC_ALL=en_US.UTF-8 add-apt
 
 ## phpmyadmin
 
-### Installation for php5
+### [Installation for php7](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-16-04?utm_source=legacy_reroute)
 
-* `sudo apt-get install phpmyadmin apache2-utils`
+* `sudo apt-get install phpmyadmin php-mbstring php-gettext`
+    * Warning: When the first prompt appears, apache2 is highlighted, but not selected. If you do not hit Space to select Apache, the installer will not move the necessary files during installation. Hit Space, Tab, and then Enter to select Apache.
+* `sudo phpenmod mbstring`
+* `sudo phpenmod mcrypt`
 
 ### [Important config](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-12-04)
   * [Change access url](http://www.thetechrepo.com/main-articles/488) from `phpmyadmin` to something else
     * `vim /etc/phpmyadmin/apache.conf`
     * `Alias /[whatever the name is] /usr/share/phpmyadmin`
     * `sudo service apache2 restart`
+  * Add access password
+    * `vim /etc/phpmyadmin/apache.conf`
+    * Make the file look like
+    ```
+    <Directory /usr/share/phpmyadmin>
+    Options FollowSymLinks
+    DirectoryIndex index.php
+    AllowOverride All
+    ...
+    ```
+    * `sudo systemctl restart apache2`
+    * `sudo vim /usr/share/phpmyadmin/.htaccess`
+    ```
+    AuthType Basic
+    AuthName "Restricted Files"
+    AuthUserFile /etc/phpmyadmin/.htpasswd
+    Require valid-user
+    ```
+    * `sudo apt-get install apache2-utils`
+    * Create username and password `sudo htpasswd -c /etc/phpmyadmin/.htpasswd [username]`
   * change to utf8_general
 
 ### Installation for php7
