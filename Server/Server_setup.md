@@ -316,9 +316,8 @@ Our system is using the swap file for this session, but we need to modify a syst
 
 # Final step
 
-* `sudo apt-get install git vim htop`
 * Install Nessus
-* Run `sudo apt-get autoremove`
+* Run `sudo apt-get autoremove && sudo apt-get autoclean`
 * Run `sudo update-grub` if necessary
 * Take a snapshot of the current system state
 
