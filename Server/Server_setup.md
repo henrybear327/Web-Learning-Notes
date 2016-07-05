@@ -17,10 +17,6 @@ This is all the work that I will do for a fresh ubuntu server setup. If you find
 
     ./letsencrypt-auto
     ```
-    
-## After the droplet has been created
-
-1. Run `apt-get update`
 
 ## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
 
@@ -28,16 +24,10 @@ This is all the work that I will do for a fresh ubuntu server setup. If you find
     * login using `ssh root@[server IP]`
     * add new user using `adduser [username]`
         * use `su root` to switch to `root` and do superuser jobs
-    * *(After installing Apache)* Give [username] privileges to upload to `/var/www` by running
-    ```
-    sudo adduser <username> www-data
-    sudo chown -R www-data:www-data /var/www
-    sudo chmod -R g+rwX /var/www
     ```
     * *(optional)* give [username] sudo privileges using `gpasswd -a [username] sudo`
         * remove user from user group `sudo gpasswd -d [username] [group]`
         * look up user group `groups [username]`
-
 2. Disable remote root login
     * go to `vim /etc/ssh/sshd_config`, and search for `/PermitRootLogin`. Change `PermitRootLogin` to `no` and save it.
     * run `service ssh restart`
@@ -57,6 +47,7 @@ This is all the work that I will do for a fresh ubuntu server setup. If you find
 
 ## Disable annoying locale warning
 
+* run `sudo apt-get update`
 * run `sudo locale-gen UTF-8`
 * run `sudo touch /var/lib/cloud/instance/locale-check.skip`
 
@@ -112,7 +103,7 @@ sudo chmod -R g+rwX /var/www
         # vim /etc/apache/apache2.conf (Debian/Ubuntu)
         ```
       * Add
-      
+
         ```
         ServerSignature Off
         ServerTokens ProductOnly
