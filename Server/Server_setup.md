@@ -47,6 +47,17 @@ This is all the work that I will do for a fresh ubuntu server setup. If you find
 
 ## Disable annoying locale warning
 
+### Solution 1 (This is what I use)
+
+* `vim /etc/environment`
+* add
+```
+LC_ALL=en_US.UTF-8
+LANG=en_US.UTF-8
+```
+
+### Solution 2
+
 * run `sudo apt-get update`
 * run `sudo locale-gen UTF-8`
 * run `sudo touch /var/lib/cloud/instance/locale-check.skip`
