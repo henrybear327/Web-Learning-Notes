@@ -197,7 +197,7 @@ exit;
 
 ### [`php.ini`](http://www.cyberciti.biz/tips/php-security-best-practices-tutorial.html)
 
-* Go to `/etc/php5/apache2` and open `php.ini`
+* `vim /etc/php/7.0/apache2/php.ini`
     * `expose_php=Off`
 
 ## phpmyadmin
@@ -235,12 +235,6 @@ exit;
     * `sudo apt-get install apache2-utils`
     * Create username and password `sudo htpasswd -c /etc/phpmyadmin/.htpasswd [username]`
   * change to utf8_general
-
-### Installation for php7
-
-* `wget https://files.phpmyadmin.net/phpMyAdmin/4.5.3.1/phpMyAdmin-4.5.3.1-all-languages.tar.gz`
-
-* `tar -xvzf phpMyAdmin-4.5.3.1-all-languages.tar.gz`
 
 ### Possible problem
 
