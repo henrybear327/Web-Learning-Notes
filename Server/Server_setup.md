@@ -2,13 +2,44 @@
 
 This is all the work that I will do for a fresh ubuntu server setup. If you find anything wrong or strange, feel free to send me pull requests or submit issues. I will try my best to merge and discuss with you.
 
+## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
+
+0. Login for the first time, using `ssh root@[Your server IP]`
+1. Setup a not-root user (with superuser privileges)
+    * add new user using `adduser [username]`
+        * use `su root` to switch norma user to `root` and do superuser jobs
+    * *(optional)* give [username] sudo privileges using `gpasswd -a [username] sudo`
+        * remove user from user group `sudo gpasswd -d [username] [group]`
+        * look up user group `groups [username]`
+2. Disable remote root login
+    * go to `vim /etc/ssh/sshd_config`, and search for `PermitRootLogin`. Change `PermitRootLogin` to `no` and save it.
+    * run `service ssh restart`
+    * Setup up a password for root by running `passwd`
+    * Logout of `root`
+3. Public key authentication
+    * Login to `[username]@[Your server IP]`
+    * Generate SSH key on **local machine** using `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`, and `cat ~/.ssh/id_rsa.pub` or `more ~/.ssh/id_rsa.pub`
+    * Run `mkdir .ssh` on **your server**, and restrict its permission by running `chmod 700 .ssh`.
+    * Add local machine's public key to **your server**'s `vim .ssh/authorized_keys`
+4. Disable password authentication
+    * Switch to `root` user by `su root`
+    * run `vim /etc/ssh/sshd_config`
+    * search for `PasswordAuth`
+    * change `#PasswordAuthentication yes` to `PasswordAuthentication no`
+    * run `service ssh restart`
+    * Logout of `[username]`
+
+## System update
+
+* `apt update; apt upgrade; poweroff --reboot`
+
 ## Disable annoying locale warning
 
 ### [Solution 1](http://askubuntu.com/questions/599808/cannot-set-lc-ctype-to-default-locale-no-such-file-or-directory)
 
 * `sudo locale-gen "en_US.UTF-8"`
 * `sudo dpkg-reconfigure locales`
-* `/etc/default/locale`
+* `vim /etc/default/locale`
 * add
 ```
 LC_CTYPE="en_US.UTF-8"
@@ -17,79 +48,15 @@ LANG="en_US.UTF-8"
 ```
 * Logout and login again
 
-### Solution 2
-
-* run `sudo apt-get update`
-* run `sudo locale-gen UTF-8`
-* run `sudo touch /var/lib/cloud/instance/locale-check.skip`
-
-```
-WARNING! Your environment specifies an invalid locale. This can affect your user experience significantly, including the ability to manage packages. You may install the locales by running:
-
-   sudo apt-get install language-pack-UTF-8
-     or
-   sudo locale-gen UTF-8
-
-To see all available language packs, run:
-   apt-cache search "^language-pack-[a-z][a-z]$"
-To disable this message for all users, run:
-   sudo touch /var/lib/cloud/instance/locale-check.skip
-```
-
-## Use connection protection service
-
-1. Cloudflare
-    * Manually setup A to point to the IP address(@), and CNAME www(@)
-    * Run throught all security service setup
-2. [Let's encrypt](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
-    * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
-    * Otherwise, do
-    ```
-    git clone https://github.com/letsencrypt/letsencrypt
-
-    cd letsencrypt
-
-    ./letsencrypt-auto
-    ```
-
-## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
-
-* Run `apt-get update; apt-get upgrade`
-
-1. Setup a not-root user (with superuser privileges)
-    * login using `ssh root@[server IP]`
-    * add new user using `adduser [username]`
-        * use `su root` to switch to `root` and do superuser jobs
-    * *(optional)* give [username] sudo privileges using `gpasswd -a [username] sudo`
-        * remove user from user group `sudo gpasswd -d [username] [group]`
-        * look up user group `groups [username]`
-2. Disable remote root login
-    * go to `vim /etc/ssh/sshd_config`, and search for `PermitRootLogin`. Change `PermitRootLogin` to `no` and save it.
-    * run `service ssh restart`
-    * Setup root password by running `passwd`
-    * Logout of `root`
-3. Public key authentication
-    * Login to `[username]`
-    * Generate SSH key on **local machine** using `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`
-    * `cat ~/.ssh/id_rsa.pub` or `more ~/.ssh/id_rsa.pub`
-    * Run `mkdir .ssh` on [username], and restrict its permission by running `chmod 700 .ssh`.
-    * Add local machine's public key to [username]'s `vim .ssh/authorized_keys`
-4. Disable password authentication
-    * Switch to `root` user
-    * run `vim /etc/ssh/sshd_config`
-    * search for `PasswordAuth`
-    * change `#PasswordAuthentication yes` to `PasswordAuthentication no`
-    * run `service ssh restart`
-
 ## Apache
 
-### Installation
+### [Installation](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04)
 
-* `sudo apt-get update && sudo apt-get install apache2`
+* `apt update && apt install apache2`
     * Use `ip addr show eth0 | grep inet | awk '{ print $2; }' | sed 's/\/.*$//'` to check server IP address
 * Give [username] privileges to upload to `/var/www` by running
 ```
-sudo adduser <username> www-data
+sudo adduser [username] www-data
 sudo chown -R www-data:www-data /var/www
 sudo chmod -R g+rwX /var/www
 ```
@@ -114,11 +81,8 @@ sudo chmod -R g+rwX /var/www
     ```
     then restart apache by `sudo service apache2 restart`
     * [Hide Apache Version and OS Identity from Errors](http://www.tecmint.com/apache-security-tips/)
-      * run
-        ```
-        vim /etc/httpd/conf/httpd.conf (RHEL/CentOS/Fedora)
-        vim /etc/apache2/apache2.conf (Debian/Ubuntu)
-        ```
+      * run `vim /etc/apache2/apache2.conf (Debian/Ubuntu)`
+        * Sidenotes: `vim /etc/httpd/conf/httpd.conf (RHEL/CentOS/Fedora)`
       * Add
 
         ```
@@ -199,6 +163,23 @@ exit;
 
 * `vim /etc/php/7.0/apache2/php.ini`
     * `expose_php=Off`
+
+## Use connection protection service
+
+1. Cloudflare
+    * Manually setup A to point to the IP address(@), and CNAME www(@)
+    * Run throught all security service setup
+2. [Let's encrypt](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
+    * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
+    * Otherwise, do
+    ```
+    git clone https://github.com/letsencrypt/letsencrypt
+
+    cd letsencrypt
+
+    ./letsencrypt-auto
+    ```
+
 
 ## phpmyadmin
 
