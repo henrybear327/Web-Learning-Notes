@@ -1,6 +1,13 @@
-# Ubuntu Server setup (Ubuntu 16.04 x64)
+# Ubuntu Server setup
 
-This is all the work that I will do for a fresh ubuntu server setup. If you find anything wrong or strange, feel free to send me pull requests or submit issues. I will try my best to merge and discuss with you.
+* Tested OS: `Ubuntu 16.04 x64`
+* Special thanks to [BePsvPT](https://github.com/BePsvPT) for scrutinizing my notes and making suggestions.
+
+# Note Information
+
+This is all the work that I will do for a new Ubuntu server setup.
+
+If you find anything wrong or strange, feel free to send me pull requests or submit issues. I will try my best to merge and discuss with you.
 
 ## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
 
@@ -31,7 +38,8 @@ This is all the work that I will do for a fresh ubuntu server setup. If you find
 
 ## System update
 
-* `apt update; apt upgrade; poweroff --reboot`
+* `apt update; apt upgrade;`
+  * If the kernel is updated, run `poweroff --reboot`
 
 ## Disable annoying locale warning
 
