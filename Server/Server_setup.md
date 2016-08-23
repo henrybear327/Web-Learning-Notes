@@ -257,9 +257,9 @@ mv composer.phar /usr/local/bin/composer
     * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
     * Otherwise, do
     ```
-    apt install letsencrypt
+    sudo apt install letsencrypt python-letsencrypt-apache;
+    letsencrypt --apache -d [Your domain name];
     ```
-
 
 # [SWAP](https://www.digitalocean.com/community/tutorials/additional-recommended-steps-for-new-ubuntu-14-04-servers)
 
