@@ -177,31 +177,13 @@ exit;
 
 * `vim /var/log/apache2/error.log`
 
-## Use connection protection service
-
-1. Cloudflare
-    * Manually setup A to point to the IP address(@), and CNAME www(@)
-    * Run throught all security service setup
-2. [Let's encrypt](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
-    * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
-    * Otherwise, do
-    ```
-    git clone https://github.com/letsencrypt/letsencrypt
-
-    cd letsencrypt
-
-    ./letsencrypt-auto
-    ```
-
-
 ## phpmyadmin
 
 ### [Installation for php7](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-16-04?utm_source=legacy_reroute)
 
-* `sudo apt-get install phpmyadmin php-mbstring php-gettext`
-    * Warning: When the first prompt appears, apache2 is highlighted, but not selected. If you do not hit Space to select Apache, the installer will not move the necessary files during installation. Hit Space, Tab, and then Enter to select Apache.
-* `sudo phpenmod mbstring`
-* `sudo phpenmod mcrypt`
+* `sudo apt install phpmyadmin php-mbstring php-gettext`
+    * Warning: When the first prompt appears, apache2 is highlighted, but not selected. **If you do not hit Space to select Apache, the installer will not move the necessary files during installation.** Hit Space, Tab, and then Enter to select Apache.
+* `sudo phpenmod mbstring; sudo phpenmod mcrypt`
 
 ### [Important config](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-12-04)
   * [Change access url](http://www.thetechrepo.com/main-articles/488) from `phpmyadmin` to something else
@@ -228,7 +210,7 @@ exit;
     ```
     * `sudo apt-get install apache2-utils`
     * Create username and password `sudo htpasswd -c /etc/phpmyadmin/.htpasswd [username]`
-  * change to utf8_general
+  * change server connection collation to utf8_general
 
 ### Possible problem
 
@@ -253,6 +235,23 @@ You can start with this [good video tutorial](https://www.youtube.com/watch?v=FK
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 ```
+
+## Use connection protection service
+
+1. Cloudflare
+    * Manually setup A to point to the IP address(@), and CNAME www(@)
+    * Run through all security service setup
+2. [Let's encrypt](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
+    * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
+    * Otherwise, do
+    ```
+    git clone https://github.com/letsencrypt/letsencrypt
+
+    cd letsencrypt
+
+    ./letsencrypt-auto
+    ```
+
 
 # [SWAP](https://www.digitalocean.com/community/tutorials/additional-recommended-steps-for-new-ubuntu-14-04-servers)
 
