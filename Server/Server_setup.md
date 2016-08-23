@@ -343,7 +343,7 @@ Notes for each setting:
   * Use interactive mode
 * Obtain a key for Nessus [here](https://www.tenable.com/products/nessus/nessus-plugins/obtain-an-activation-code)
 * Install Nessus by running `dpkg -i [Filename]`
-* Start Nessus by running `/etc/init.d/nessusd start`, and visit `[server ip:8834]`
+* Start Nessus by running `/etc/init.d/nessusd start`, and visit `[server ip]:8834`
 
 # Final step
 
