@@ -1,13 +1,15 @@
-# Ubuntu Server setup
+# Ubuntu Server setup notes
 
 * Tested OS: `Ubuntu 16.04 x64`
 * Special thanks to [BePsvPT](https://github.com/BePsvPT) for scrutinizing my notes and making suggestions.
 
-# Note Information
+# FYI
 
 This is all the work that I will do for a new Ubuntu server setup.
 
 If you find anything wrong or strange, feel free to send me pull requests or submit issues. I will try my best to merge and discuss with you.
+
+# Let's start!
 
 ## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
 
@@ -35,6 +37,8 @@ If you find anything wrong or strange, feel free to send me pull requests or sub
     * change `#PasswordAuthentication yes` to `PasswordAuthentication no`
     * run `service ssh restart`
     * Logout of `[username]`
+
+** NOTICE: ** From now on, you should be executing commands using the account that has root privileges.
 
 ## System update
 
@@ -253,7 +257,7 @@ mv composer.phar /usr/local/bin/composer
     * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
     * Otherwise, do
     ```
-    letsencrypt-auto
+    apt install letsencrypt
     ```
 
 
