@@ -159,7 +159,7 @@ exit;
 
 ### PHP Installation
 
-* `sudo apt install php libapache2-mod-php php-mcrypt php-mysql`
+* `sudo apt install php libapache2-mod-php php-mysql`
 * `sudo vim /etc/apache2/mods-enabled/dir.conf` and move `index.php` to the first of the list, which should look like this
     ```
     <IfModule mod_dir.c>
@@ -191,7 +191,7 @@ exit;
 
 * `sudo apt install phpmyadmin php-mbstring php-gettext`
     * Warning: When the first prompt appears, apache2 is highlighted, but not selected. **If you do not hit Space to select Apache, the installer will not move the necessary files during installation.** Hit Space, Tab, and then Enter to select Apache.
-* `sudo phpenmod mbstring; sudo phpenmod mcrypt`
+* `sudo phpenmod mbstring;`
 
 ### [Important config](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-12-04)
   * [Change access url](http://www.thetechrepo.com/main-articles/488) from `phpmyadmin` to something else
@@ -253,11 +253,7 @@ mv composer.phar /usr/local/bin/composer
     * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
     * Otherwise, do
     ```
-    git clone https://github.com/letsencrypt/letsencrypt
-
-    cd letsencrypt
-
-    ./letsencrypt-auto
+    letsencrypt-auto
     ```
 
 
