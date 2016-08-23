@@ -101,17 +101,20 @@ sudo chmod -R g+rwX /var/www
 
 ## MariaDB
 
-### Installation
+### [Installation](https://downloads.mariadb.org/mariadb/repositories/#mirror=ossplanet&distro=Ubuntu&distro_release=xenial--ubuntu_xenial&version=10.1) (version 10.1)
 
-* `sudo apt-get install mariadb-server`
-* `sudo apt-get install software-properties-common`
-* `sudo service mysql stop`
-* `sudo mysql_install_db`
+* Before installing...
+    ```
+    sudo apt-get install software-properties-common
+    sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+    sudo add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.ubuntu-tw.org/mirror/mariadb/repo/10.1/ubuntu xenial main'
+    ```
+* `sudo apt update; sudo apt install mariadb-server`
+* `mysql_secure_installation`
+* Use `sudo service mysql status` to check database status
 
 ### [Secure MariaDB](https://mariadb.com/kb/en/mariadb/mysql_secure_installation/)
 
-* `sudo service mysql start`
-* `mysql_secure_installation`
 * rename `root` user
 * Method 1:
   * login to mysql using `mysql -u [rootusername] -p`
@@ -123,7 +126,11 @@ sudo chmod -R g+rwX /var/www
   * run `use mysql; update user set user='admin' where user='root'; flush privileges;`
   * If you also want to change password, run `update user set password=PASSWORD('new password') where user='admin';` before `flush privileges;`
 
-### [Final fix for phpMyAdmin to work](http://superuser.com/questions/957708/mysql-mariadb-error-1698-28000-access-denied-for-user-rootlocalhost)
+
+### Sidenotes
+
+* `sudo service mysql start|stop`
+* [Final fix for phpMyAdmin to work](http://superuser.com/questions/957708/mysql-mariadb-error-1698-28000-access-denied-for-user-rootlocalhost)
 
 ```
 sudo mysql -u root
@@ -133,36 +140,42 @@ flush privileges;
 exit;
 ```
 
+### [Removing MySQL](https://www.unixmen.com/how-to-install-lamp-stack-on-ubuntu-16-04/)
+
+* `sudo systemctl stop mysql`
+* `sudo apt remove --purge mysql-server mysql-client mysql-common`
+* `sudo apt autoremove; sudo apt autoclean`
+* `sudo rm -rf /var/lib/mysql/; sudo rm -rf /etc/mysql/`
+
 ## PHP7
 
 ### PHP Installation
 
-* `sudo apt-get install php libapache2-mod-php php-mcrypt php-mysql`
-* `sudo vim /etc/apache2/mods-enabled/dir.conf`
+* `sudo apt install php libapache2-mod-php php-mcrypt php-mysql`
+* `sudo vim /etc/apache2/mods-enabled/dir.conf` and move `index.php` to the first of the list, which should look like this
+    ```
+    <IfModule mod_dir.c>
+        DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
+    </IfModule>
+    ```
 * `sudo systemctl restart apache2`
     * Check status using `sudo systemctl status apache2`
-* Create test page
+* Create a test page
     * `sudo vim /var/www/html/info.php`
     * Add
     ```
     <?php
     phpinfo();
     ```
-    * `sudo rm /var/www/html/info.php`
-
-### Possible problem
-
-* [Headers and client library minor version mismatch](http://stackoverflow.com/questions/10759334/headers-and-client-library-minor-version-mismatch)
-  * install `sudo apt-get install php5-mysqlnd` and restart apache2
-
-### Error log location
-
-* `/var/log/apache2/error.log` or `/var/log/httpd/error_log`
-
-### [`php.ini`](http://www.cyberciti.biz/tips/php-security-best-practices-tutorial.html)
-
+    Now go to `[Server IP]/info.php`, you should see your page
+    * Run `sudo rm /var/www/html/info.php` after testing
+* Check Apache status by `sudo systemctl status apache2`
 * `vim /etc/php/7.0/apache2/php.ini`
     * `expose_php=Off`
+
+### Error log
+
+* `vim /var/log/apache2/error.log`
 
 ## Use connection protection service
 
@@ -265,9 +278,13 @@ Our system is using the swap file for this session, but we need to modify a syst
 
 # [ufw](https://www.digitalocean.com/community/tutorials/how-to-setup-a-firewall-with-ufw-on-an-ubuntu-and-debian-cloud-server)
 
+## Check settings
+
+* `sudo ufw app list` or `sudo ufw app info "Apache Full"` to look at look at the Apache Full profile
+
 ## Installation
 
-* `sudo apt-get install ufw`
+* `sudo apt install ufw`
 * `sudo ufw status`
 * If your VPS is configured for IPv6, ensure that UFW is configured to support IPv6 so that will configure both your IPv4 and IPv6 firewall rules. To do this, open the UFW configuration with this command: `sudo vi /etc/default/ufw`. Then make sure "IPV6" is set to "yes", like so:`IPV6=yes` Save and quit. Then restart your firewall with the following commands: `sudo ufw disable`
 `sudo ufw enable`
@@ -298,7 +315,7 @@ Our system is using the swap file for this session, but we need to modify a syst
 # Final step
 
 * Install Nessus
-* Run `sudo apt-get autoremove && sudo apt-get autoclean`
+* Run `sudo apt autoremove; sudo apt autoclean`
 * Run `sudo update-grub` if necessary
 * Take a snapshot of the current system state
 
