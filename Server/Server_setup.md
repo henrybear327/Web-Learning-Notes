@@ -164,6 +164,7 @@ exit;
 ### PHP Installation
 
 * `sudo apt install php libapache2-mod-php php-mysql`
+  * If you need to use `curl` in PHP, run `sudo apt-get install php-curl`
 * `sudo vim /etc/apache2/mods-enabled/dir.conf` and move `index.php` to the first of the list, which should look like this
     ```
     <IfModule mod_dir.c>
