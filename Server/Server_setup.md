@@ -98,6 +98,14 @@ sudo chmod -R g+rwX /var/www
         ServerTokens ProductOnly
         ```
       * restart apache by `sudo service apache2 restart`
+    * [Disable the status info](https://ubuntuforums.org/showthread.php?t=1435840)
+      * run `sudo a2dismod status` to disable mod_status on Apache.
+        * `sudo a2enmod status` will re-enable it
+        *
+        ```
+        If you look inside the /etc/apache2/mods-available/status.conf file that you posted the contents of, all it's doing is telling Apache to return server status information ("SetHandler server-status") when someone visits the URL "http://localhost/server-status" ("<Location /server-status>"). It is also only allowing this when accessed from localhost ("Allow from localhost ip6-localhost"). The line for "<IfModule mod_status.c>" is checking whether mod_status is installed on the system. If it's not installed then there's no point in having Apache try to return non-existent server status information.
+        ```
+
 
 ### Possible issues
 
