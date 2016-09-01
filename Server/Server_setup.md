@@ -1,13 +1,15 @@
-# Ubuntu Server setup
+# Ubuntu Server setup notes
 
 * Tested OS: `Ubuntu 16.04 x64`
 * Special thanks to [BePsvPT](https://github.com/BePsvPT) for scrutinizing my notes and making suggestions.
 
-# Note Information
+# FYI
 
 This is all the work that I will do for a new Ubuntu server setup.
 
 If you find anything wrong or strange, feel free to send me pull requests or submit issues. I will try my best to merge and discuss with you.
+
+# Let's start!
 
 ## [User accounts setup and securing them](https://www.youtube.com/watch?v=EuIYabZS3ow)
 
@@ -35,6 +37,8 @@ If you find anything wrong or strange, feel free to send me pull requests or sub
     * change `#PasswordAuthentication yes` to `PasswordAuthentication no`
     * run `service ssh restart`
     * Logout of `[username]`
+
+** NOTICE: ** From now on, you should be executing commands using the account that has root privileges.
 
 ## System update
 
@@ -167,7 +171,8 @@ exit;
 
 ### PHP Installation
 
-* `sudo apt install php libapache2-mod-php php-mcrypt php-mysql`
+* `sudo apt install php libapache2-mod-php php-mysql`
+  * If you need to use `curl` in PHP, run `sudo apt-get install php-curl`
 * `sudo vim /etc/apache2/mods-enabled/dir.conf` and move `index.php` to the first of the list, which should look like this
     ```
     <IfModule mod_dir.c>
@@ -199,16 +204,16 @@ exit;
 
 * `sudo apt install phpmyadmin php-mbstring php-gettext`
     * Warning: When the first prompt appears, apache2 is highlighted, but not selected. **If you do not hit Space to select Apache, the installer will not move the necessary files during installation.** Hit Space, Tab, and then Enter to select Apache.
-* `sudo phpenmod mbstring; sudo phpenmod mcrypt`
+* `sudo phpenmod mbstring;`
 
-### [Important config](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-12-04)
+### [Important config](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-16-04)
   * [Change access url](http://www.thetechrepo.com/main-articles/488) from `phpmyadmin` to something else
     * `vim /etc/phpmyadmin/apache.conf`
     * `Alias /[whatever the name is] /usr/share/phpmyadmin`
     * `sudo service apache2 restart`
   * Add access password
-    * `vim /etc/phpmyadmin/apache.conf`
-    * Make the file look like
+    * `sudo vim /etc/apache2/conf-available/phpmyadmin.conf`
+    * Add `AllowOverride All` directive within the `<Directory /usr/share/phpmyadmin>` section of the configuration file,
     ```
     <Directory /usr/share/phpmyadmin>
     Options FollowSymLinks
@@ -224,9 +229,16 @@ exit;
     AuthUserFile /etc/phpmyadmin/.htpasswd
     Require valid-user
     ```
+    Meanings are listed as followed:
+    ```
+    AuthType Basic: This line specifies the authentication type that we are implementing. This type will implement password authentication using a password file.
+    AuthName: This sets the message for the authentication dialog box. You should keep this generic so that unauthorized users won't gain any information about what is being protected.
+    AuthUserFile: This sets the location of the password file that will be used for authentication. This should be outside of the directories that are being served. We will create this file shortly.
+    Require valid-user: This specifies that only authenticated users should be given access to this resource. This is what actually stops unauthorized users from entering.
+    ```
     * `sudo apt-get install apache2-utils`
     * Create username and password `sudo htpasswd -c /etc/phpmyadmin/.htpasswd [username]`
-  * change server connection collation to utf8_general
+  * change server connection collation to utf8_general_ci
 
 ### Possible problem
 
@@ -257,17 +269,13 @@ mv composer.phar /usr/local/bin/composer
 1. Cloudflare
     * Manually setup A to point to the IP address(@), and CNAME www(@)
     * Run through all security service setup
-2. [Let's encrypt](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
-    * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com)
+2. [Let's encrypt](https://letsencrypt.readthedocs.io/en/latest/using.html#installation)
+    * If you are using Cloudflare, please read [this article](https://bepsvpt.wordpress.com/2015/12/25/introduction-to-lets-encrypt/)
     * Otherwise, do
     ```
-    git clone https://github.com/letsencrypt/letsencrypt
-
-    cd letsencrypt
-
-    ./letsencrypt-auto
+    sudo apt install letsencrypt python-letsencrypt-apache;
+    letsencrypt --apache -d [Your domain name];
     ```
-
 
 # [SWAP](https://www.digitalocean.com/community/tutorials/additional-recommended-steps-for-new-ubuntu-14-04-servers)
 
@@ -306,8 +314,18 @@ Our system is using the swap file for this session, but we need to modify a syst
 
 ## Setup
 
-* `sudo ufw default deny incoming`
-* `sudo ufw default allow outgoing`
+```
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow ssh
+sudo ufw allow www
+sudo ufw allow ntp
+sudo ufw allow sftp
+sudo ufw allow 8834/tcp
+sudo ufw allow 443/tcp
+```
+
+Notes for each setting:
 * `sudo ufw allow ssh` (22/tcp)
 * `sudo ufw allow www` (80/tcp)
 * `sudo ufw allow ntp` (123/tcp)
@@ -319,17 +337,25 @@ Our system is using the swap file for this session, but we need to modify a syst
 # ntp
 
 * `sudo dpkg-reconfigure tzdata`
-*  select time zone
-* `sudo apt-get update`
-* `sudo apt-get install ntp`
+  *  select time zone
+* `sudo apt install ntp; sudo service ntp start`
+* Use `ntpq -p` to check the status
 
 # htop
 
 * `sudo apt-get install htop`
 
+# Nessus
+
+* Go to `https://www.tenable.com/products/nessus/select-your-operating-system#tos` and download the version you need
+  * Use `filezilla` to upload the file(`apt install filezilla`)
+  * Use interactive mode
+* Obtain a key for Nessus [here](https://www.tenable.com/products/nessus/nessus-plugins/obtain-an-activation-code)
+* Install Nessus by running `dpkg -i [Filename]`
+* Start Nessus by running `/etc/init.d/nessusd start`, and visit `[server ip]:8834`
+
 # Final step
 
-* Install Nessus
 * Run `sudo apt autoremove; sudo apt autoclean`
 * Run `sudo update-grub` if necessary
 * Take a snapshot of the current system state
