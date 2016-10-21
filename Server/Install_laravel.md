@@ -32,3 +32,4 @@ chmod -R 777 bootstrap/cache/
         AllowOverride All
     </Directory>
     ```
+* Create `404 page`, and add `Google analytics`
