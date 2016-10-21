@@ -16,8 +16,8 @@
 * Add `export PATH=$PATH:$HOME/.config/composer/vendor/bin` to `.bashrc`
     * Add to `.bash_profile` if you are on Mac
     * PATH may be `~/.composer/vendor/bin`
-    
-## Create new project 
+
+## Create new project
 
 * `laravel new project-name`
 * This following step is CRUCIAL
@@ -25,4 +25,10 @@
 chmod -R 777 storage/
 chmod -R 777 bootstrap/cache/
 ```
-* Setup virtualhost, point it directly to `/public/` folder
+* Set up virtual host, point it directly to `/public/` folder
+    * [Add the following code](https://www.dev-metal.com/enable-mod_rewrite-ubuntu-14-04-lts/) in `<VirtualHost *:80>` of the virtual host setting
+    ```
+    <Directory "/var/www/html">
+        AllowOverride All
+    </Directory>
+    ```
