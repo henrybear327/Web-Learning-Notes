@@ -3,13 +3,18 @@
 ## Install [Composer](https://getcomposer.org/download/)
 
 * `mv composer.phar /usr/local/bin/composer`
-* `restart terminal`
 
-## Installation
+## Install Laravel
 * Install `sudo apt-get install php7.0-zip`
 * Run `composer global require "laravel/installer"`
 * Add `export PATH=$PATH:$HOME/.config/composer/vendor/bin` to `.bashrc`
     * Add to `.bash_profile` if you are on Mac
+* `laravel new project-name`
+* This following step is CRUCIAL
+```
+chmod -R 777 storage/
+chmod -R 777 bootstrap/cache/
+```
 
 ## Enable `mod rewrite`
 
