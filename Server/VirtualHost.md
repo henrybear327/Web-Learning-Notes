@@ -24,28 +24,33 @@ Run `vim /var/www/[domian name to use]/html/index.html` and add
 
 * `sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/[domian name to use].conf`
 * `sudo vim /etc/apache2/sites-available/[domian name to use].conf`
-  * We need to add two directives. The first, called ServerName, establishes the base domain that should match for this virtual host definition. This will most likely be your domain. The second, called ServerAlias, defines further names that should match as if they were the base name. This is useful for matching hosts you defined, like www
-  ```
+* The `.conf` file should look something like this (change `[domian name to use]` according to your needs):
+```
+<VirtualHost *:80>
+  ServerAdmin admin@[domian name to use]
   ServerName [domian name to use]
   ServerAlias www.[domian name to use]
-  ```
-  * Add `DocumentRoot /var/www/[domian name to use]/html`
-  * The file should look something like this:
-  ```
-  <VirtualHost *:80>
-    ServerAdmin admin@example.com
-    ServerName example.com
-    ServerAlias www.example.com
-    DocumentRoot /var/www/example.com/public_html
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-  </VirtualHost>
-  ```
+  DocumentRoot /var/www/[domian name to use]/public_html
+
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
 
 # Enable/Disable the New Virtual Host Files
 
 * `sudo a2ensite [domian name to use].conf`
 * `sudo a2dissite 000-default.conf`
+
+# Notes on Rewrite engine
+
+Comment out `RewriteCond` and `RewriteRule`
+
+```
+RewriteEngine on
+# RewriteCond %{SERVER_NAME} =[domian name to use]
+# RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,QSA,R=permanent]
+```
 
 # Restart
 
