@@ -2,6 +2,7 @@
 
 ## Install [Composer](https://getcomposer.org/download/)
 
+* Make sure that you are at `$HOME` directory!
 * `mv composer.phar /usr/local/bin/composer`
 
 ## Enable `mod rewrite`
