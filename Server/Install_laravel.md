@@ -15,6 +15,7 @@
 * Run `composer global require "laravel/installer"`
 * Add `export PATH=$PATH:$HOME/.config/composer/vendor/bin` to `.bashrc`
     * Add to `.bash_profile` if you are on Mac
+    * PATH may be `~/.composer/vendor/bin`
     
 ## Create new project 
 
