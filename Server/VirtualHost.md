@@ -2,13 +2,13 @@
 
 ## Setup
 
-* Setup a folder `sudo mkdir -p /var/www/[domian name to use]/public_html`
-* Grant permission `sudo chown -R $USER:$USER /var/www/[domian name to use]/public_html`
+* Setup a folder `sudo mkdir -p /var/www/[domian name to use]/html`
+* Grant permission `sudo chown -R $USER:$USER /var/www/[domian name to use]/html`
 * `sudo chmod -R 755 /var/www`
 
 ## Create Demo Page
 
-Run `vim /var/www/[domian name to use]/public_html/index.html` and add
+Run `vim /var/www/[domian name to use]/html/index.html` and add
 ```
 <html>
   <head>
@@ -29,7 +29,7 @@ Run `vim /var/www/[domian name to use]/public_html/index.html` and add
   ServerName [domian name to use]
   ServerAlias www.[domian name to use]
   ```
-  * Add `DocumentRoot /var/www/[domian name to use]/public_html`
+  * Add `DocumentRoot /var/www/[domian name to use]/html`
   * The file should look something like this:
   ```
   <VirtualHost *:80>
