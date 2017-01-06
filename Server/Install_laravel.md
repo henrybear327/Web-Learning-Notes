@@ -25,10 +25,10 @@
 chmod -R 777 storage/
 chmod -R 777 bootstrap/cache/
 ```
-* Set up virtual host, point it directly to `/public/` folder
+* Set up [virtual host](./VirtualHost.md), point it directly to `/public/` folder
     * [Add the following code](https://www.dev-metal.com/enable-mod_rewrite-ubuntu-14-04-lts/) in `<VirtualHost *:80>` of the virtual host setting
     ```
-    <Directory "/var/www/html">
+    <Directory "/var/www/[Your Directory]">
         AllowOverride All
     </Directory>
     ```

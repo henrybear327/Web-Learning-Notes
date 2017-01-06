@@ -30,27 +30,24 @@ Run `vim /var/www/[domian name to use]/html/index.html` and add
   ServerAdmin admin@[domian name to use]
   ServerName [domian name to use]
   ServerAlias www.[domian name to use]
-  DocumentRoot /var/www/[domian name to use]/public_html
+  DocumentRoot /var/www/[domian name to use]/public
 
   ErrorLog ${APACHE_LOG_DIR}/error.log
   CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
+    * The DocumentRoot for Laravel must point to `public` folder!
+    * Comment out `RewriteCond` and `RewriteRule`
+    ```
+    RewriteEngine on
+    # RewriteCond %{SERVER_NAME} =[domian name to use]
+    # RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,QSA,R=permanent]
+    ```
 
 # Enable/Disable the New Virtual Host Files
 
 * `sudo a2ensite [domian name to use].conf`
 * `sudo a2dissite 000-default.conf`
-
-# Notes on Rewrite engine
-
-Comment out `RewriteCond` and `RewriteRule`
-
-```
-RewriteEngine on
-# RewriteCond %{SERVER_NAME} =[domian name to use]
-# RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,QSA,R=permanent]
-```
 
 # Restart
 
