@@ -27,14 +27,29 @@ Run `vim /var/www/[domian name to use]/html/index.html` and add
 * The `.conf` file should look something like this (change `[domian name to use]` according to your needs):
 ```
 <VirtualHost *:80>
-  ServerAdmin admin@[domian name to use]
-  ServerName [domian name to use]
-  ServerAlias www.[domian name to use]
-  DocumentRoot /var/www/[domian name to use]/public_html
+        ServerAdmin webmaster@localhost
+        ServerName [domian name to use]
+        ServerAlias www.[domian name to use]
+        DocumentRoot /var/www/[path to your site folder]
 
-  ErrorLog ${APACHE_LOG_DIR}/error.log
-  CustomLog ${APACHE_LOG_DIR}/access.log combined
+         <Directory [path to your site folder]>
+                Options -Indexes +FollowSymLinks +MultiViews
+
+                # Allow .htaccess files
+                AllowOverride All
+
+                # Allow web access to this directory
+                Require all granted
+        </Directory>
+        
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        
+RewriteEngine on
 </VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
 ```
 
 # Enable/Disable the New Virtual Host Files
