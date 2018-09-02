@@ -64,6 +64,12 @@ LANG="en_US.UTF-8"
 
 * `apt-cache search "^language-pack-[a-z][a-z]$"`, and `sudo apt install` the language you want
 
+## [ZSH](https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH)
+
+* `sudo apt-get install zsh`
+* `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
+* `sudo chsh -s /bin/zsh [username]`
+
 ## Apache
 
 ### [Installation](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04)
