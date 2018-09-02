@@ -60,6 +60,10 @@ LANG="en_US.UTF-8"
 ```
 * Logout and login again
 
+### Solution 2
+
+* `apt-cache search "^language-pack-[a-z][a-z]$"`, and `sudo apt install` the language you want
+
 ## Apache
 
 ### [Installation](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04)
