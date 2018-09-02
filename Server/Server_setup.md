@@ -63,6 +63,8 @@ LANG="en_US.UTF-8"
 ### Solution 2
 
 * `apt-cache search "^language-pack-[a-z][a-z]$"`, and `sudo apt install` the language you want
+* [https://stackoverflow.com/questions/36394101/pip-install-locale-error-unsupported-locale-setting?lq=1]
+   * `export LC_ALL=C`
 
 ## [ZSH](https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH)
 
