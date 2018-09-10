@@ -352,6 +352,8 @@ Notes for each setting:
   *  select time zone
 * `sudo apt install ntp; sudo service ntp start`
 * Use `ntpq -p` to check the status
+* Restart `cron`
+   * `sudo service cron restart`
 
 # htop
 
